@@ -11,7 +11,6 @@ def ParseInput():
 
     #takes input
     parser= argparse.ArgumentParser("Welcome to the GPS Extractor version 1.0")
-    parser.add_argument('-l', '--logPath', type= ValidateDirectory, required= true, help= 'specify the directory for the output forensic file')
     parser.add_argument('-c', '--csvPath', type= ValidateDirectory, required= true, help= 'specify the directory for the output csv file')
     parser.add_argument('-s', '--scanPath', type= ValidateDirectory, required= true, help= 'specify the directory to scan for the img files')
 
@@ -39,7 +38,7 @@ def Extractdict(filePath):
        data= pilImage._getEXIF()
     except Exception:
        #log the error and exit
-       logging.error("Could not open the image file!!!\n")
+       logging.error("Could not open the image file!\n")
        return None, None
 
     imageTime= 'NA'
@@ -135,9 +134,27 @@ def Convert(gpscd):
 
 
 
-def 
+class _CSVWriter:
+
+    def __init__(self, filePath):
+       try:
+           #create the op csv file with write only type
+           self.csvfile= open(filePath, 'wb')
+           self.writer= csv.writer(self.csvfile, delimiter= ', ', quoting= csv.QUOTE_ALL)
+           self.writer.writerow(('Image Path', 'TimeStamp', 'Camera Make', 'Camera Model', 'Lat Ref', 'Latitude', 'Lon Ref', 'Longitude'))
+       except:
+           #unable to write the csv file
+           logging.error('CSV File failure\n')
+
+
+    def writeCSVRow(self, filePath, timestamp, cameramake, cameramodel, latref, latitude, lonref, longitude):
+       latstr= '%.8f'% latitude
+       lonstr= '%.8f'% longitude
+       self.writer.writerow((filePath, timestamp, cameramake, cameramodel, latref, latitude, lonref, longitude))
        
-           
+    def writerClose(self):#CHECK
+       self.csvfile.close()
+    
                
 
 
