@@ -24,7 +24,7 @@ def ValidateDirectory(theDir):
     if(not os.path.isdir(theDir)):
         raise argparse.ArgumentTypeError('Directory does not exist')
 
-    if(os.access(theDir, os.W_OK):
+    if(os.access(theDir, os.W_OK)):
        return theDir
     else:
        raise argparse.ArgumentTypeError('Directory isn\'t writable!!')
