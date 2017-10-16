@@ -2,7 +2,7 @@ import os
 import argparse
 import sys
 from PIL import Image
-from PIL.EXIFTags import TAGS, GPSTAGS
+from PIL.ExifTags import TAGS, GPSTAGS
 import logging
 
 logging= logging.getLogger(__name__)
@@ -11,8 +11,8 @@ def ParseInput():
 
     #takes input
     parser= argparse.ArgumentParser("Welcome to the GPS Extractor version 1.0")
-    parser.add_argument('-c', '--csvPath', type= ValidateDirectory, required= true, help= 'specify the directory for the output csv file')
-    parser.add_argument('-s', '--scanPath', type= ValidateDirectory, required= true, help= 'specify the directory to scan for the img files')
+    parser.add_argument('-c', '--csvPath', type= ValidateDirectory, required= True, help= 'specify the directory for the output csv file')
+    parser.add_argument('-s', '--scanPath', type= ValidateDirectory, required= True, help= 'specify the directory to scan for the img files')
 
     theArgs= parser.parse_args()
     return theArgs
