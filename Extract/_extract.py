@@ -1,4 +1,5 @@
 import os
+import csv
 import argparse
 import sys
 from PIL import Image
@@ -35,7 +36,7 @@ def Extractdict(filePath):
 
     try:
        pilImage= Image.open(filePath)
-       data= pilImage._getEXIF()
+       data= pilImage._getexif()
     except Exception:
        #log the error and exit
        logging.error("Could not open the image file!\n")
@@ -48,7 +49,7 @@ def Extractdict(filePath):
     if(data):
        for tag, theValue in data.items():
            #get the name of the tag from TAGS
-           tagValue= TAGS.get(tag)
+           tagValue= TAGS.get(tag, tag)
            if(tagValue== 'DateTimeOriginal'):
                imageTime= data.get(tag)
            if(tagValue== 'Make'):
@@ -61,7 +62,7 @@ def Extractdict(filePath):
                gpsdict= {}
                for curtag in theValue:
                    #get the name for the tag from GPSTAGS
-                   gpstag= GPSTAGS.get(curtag)
+                   gpstag= GPSTAGS.get(curtag, curtag)
                    gpsdict[gpstag]= theValue[curtag]
        basicdata= [imageTime, CameraMake, CameraModel]
        return gpsdict, basicdata
@@ -110,7 +111,7 @@ def Convert(gpscd):
        #prevent zero division
        degrees=float(d0)/float(d1)
     except:
-       degress= 0.0
+       degrees= 0.0
 
     m0= gpscd[1][0]
     m1= gpscd[1][1]
@@ -140,7 +141,7 @@ class _CSVWriter:
        try:
            #create the op csv file with write only type
            self.csvfile= open(filePath, 'wb')
-           self.writer= csv.writer(self.csvfile, delimiter= ', ', quoting= csv.QUOTE_ALL)
+           self.writer= csv.writer(self.csvfile, delimiter= ',', quoting= csv.QUOTE_ALL)
            self.writer.writerow(('Image Path', 'TimeStamp', 'Camera Make', 'Camera Model', 'Lat Ref', 'Latitude', 'Lon Ref', 'Longitude'))
        except:
            #unable to write the csv file
@@ -155,9 +156,4 @@ class _CSVWriter:
     def writerClose(self):#CHECK
        self.csvfile.close()
     
-               
-
-
-
-
                

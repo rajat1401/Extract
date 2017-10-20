@@ -1,5 +1,6 @@
 import os
 import sys
+import csv
 import _extract
 import logging
 import time
@@ -26,37 +27,37 @@ if __name__== '__main__':
     except:
         logging.error('Invalid directory ' + targetDir + '\n')
         #not even one image file processed thus exit simply
-        sys.exit()
+        exit(0)
 
-    L= []
     for thefile in pics:
         targetfile= targetDir  + thefile
         if(os.path.isfile(targetfile)):
             gpsdict, exiflist= _extract.Extractdict(targetfile)
             if(gpsdict):
                 coor= _extract.Extractlatlon(gpsdict)
-                lat= coor['Lat']
-                latref= coor['LatRef']
-                lon= coor['Lon']
-                lonref= coor['LonRef']
-                if(lat and latref and lon and lonref):
-                    L.append(str(lat) + ',' + str(lon))
-                    opcsv.writeCSVRow(targetfile, exiflist[0], exiflist[1], exiflist[2], latref, lat, lonref, lon)
-                    logging.info('Extraction complete for ' + targetfile + '\n')
+                if not (coor is None):
+                    lat= coor['Lat']
+                    latref= coor['LatRef']
+                    lon= coor['Lon']
+                    lonref= coor['LonRef']
+                    if(lat and latref and lon and lonref):
+                        print (str(lat) + ',' + str(lon))
+                        opcsv.writeCSVRow(targetfile, exiflist[0], exiflist[1], exiflist[2], latref, lat, lonref, lon)
+                        logging.info('Extraction complete for ' + targetfile + '\n')
+                    else:
+                        logging.warning('No data extracted for ' + targetfile + '\n')
                 else:
                     logging.warning('No data extracted for ' + targetfile + '\n')
             else:
                 logging.warning('No data extracted for ' + targetfile + '\n')
         else:
-            logging.warning(targetfile + ' noto a valid file!\n')
+            logging.warning(targetfile + ' not a valid file!\n')
 
     endTime= time.time()
     logging.info('Elapsed time: ' + str(endTime - startTime) + '\n')
     logging.info('Program Terminated!!!\n')
     opcsv.writerClose()
 
-    for i in L:
-        print (i)
     
     
     
