@@ -39,7 +39,7 @@ def Extractdict(filePath):
        data= pilImage._getexif()
     except Exception:
        #log the error and exit
-       logging.error("Could not open the image file!\n")
+       logging.error('Could not open the image file!\n')
        return None, None
 
     imageTime= 'NA'
@@ -69,15 +69,15 @@ def Extractdict(filePath):
        
     else:
        #log the error and exit
-       logging.error("The data could not be extracted\n")
+       logging.error('The data could not be extracted\n')
        return None, None
 
 
 
-def Extractlatlon(gpsdict):
+def Extractlatlon(gpsdict):#P OKAY
 
     #function to extract the values of latitude and longitude
-    if(gpsdict.has_key("GPSLatitude") and gpsdict.has_key("GPSLongitude") and gpsdict.has_key("GPSLatitudeRef") and gpsdict.has_key("GPSLongitudeRef")):
+    if(gpsdict.has_key('GPSLatitude') and gpsdict.has_key('GPSLongitude') and gpsdict.has_key('GPSLatitudeRef') and gpsdict.has_key('GPSLongitudeRef')):
        latitude= gpsdict['GPSLatitude']
        latituderef= gpsdict['GPSLatitudeRef']
        longitude= gpsdict['GPSLongitude']
@@ -98,11 +98,11 @@ def Extractlatlon(gpsdict):
        return gpsfinal
        
     else:
-       logging.error("GPS Extraction couldn\'t be performed\n")
+       logging.error('GPS Extraction couldn\'t be performed\n')
        return None
 
 
-def Convert(gpscd):
+def Convert(gpscd):#OKAY
 
     d0= gpscd[0][0]
     d1= gpscd[0][1]
@@ -135,13 +135,13 @@ def Convert(gpscd):
 
 
 
-class _CSVWriter:
+class _CSVWriter:#OKAY
 
     def __init__(self, filePath):
        try:
            #create the op csv file with write only type
            self.csvfile= open(filePath, 'wb')
-           self.writer= csv.writer(self.csvfile, delimiter= ',', quoting= csv.QUOTE_ALL)
+           self.writer= csv.writer(self.csvfile, delimiter= ', ', quoting= csv.QUOTE_ALL)
            self.writer.writerow(('Image Path', 'TimeStamp', 'Camera Make', 'Camera Model', 'Lat Ref', 'Latitude', 'Lon Ref', 'Longitude'))
        except:
            #unable to write the csv file

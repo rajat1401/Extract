@@ -27,7 +27,7 @@ if __name__== '__main__':
     except:
         logging.error('Invalid directory ' + targetDir + '\n')
         #not even one image file processed thus exit simply
-        exit(0)
+        sys.exit()
 
     for thefile in pics:
         targetfile= targetDir  + thefile
@@ -36,12 +36,12 @@ if __name__== '__main__':
             if(gpsdict):
                 coor= _extract.Extractlatlon(gpsdict)
                 if not (coor is None):
-                    lat= coor['Lat']
-                    latref= coor['LatRef']
-                    lon= coor['Lon']
-                    lonref= coor['LonRef']
+                    lat= coor.get('Lat')
+                    latref= coor.get('LatRef')
+                    lon= coor.get('Lon')
+                    lonref= coor.get('LonRef')
                     if(lat and latref and lon and lonref):
-                        print (str(lat) + ',' + str(lon))
+                        print (str(lat) + ',  ' + str(lon))
                         opcsv.writeCSVRow(targetfile, exiflist[0], exiflist[1], exiflist[2], latref, lat, lonref, lon)
                         logging.info('Extraction complete for ' + targetfile + '\n')
                     else:
